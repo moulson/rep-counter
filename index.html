@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>        
+        <style>
+            #timer,#reps{
+                font-size: 72px;
+                width: 100vw;
+                height: 250px;
+                text-align: center;
+                align-items: center;
+            }
+            .pull{
+                color: white;
+                background-color: green;
+            }
+            .rest{
+                color: white;
+                background-color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <a href="#" class="btn btn-primary btn-lg" id="startBtn">Start Workout</a>
+            </div>
+            <div class="row">
+                <div id="reps">/</div>
+            </div>
+            <div class="row">
+                <div id="timer">3</div>
+            </div>
+        </div>
+        <script>
+            $(function(){
+                $('#startBtn').click(function(){
+                    var reps = 7;
+                    var totalreps = 7;
+                    rep(reps,totalreps);
+                });
+            });
+
+            function rep(reps,totalreps){
+                $('#reps').text(`${totalreps - reps}/${totalreps}`);
+                //RESTING
+                $('#timer').addClass('rest').removeClass('pull');
+                var resttimer = 3;
+                var rest = setInterval(function(){
+                    if(resttimer > 0){
+                        $('#timer').text((resttimer-=.100).toPrecision(4));
+                    }
+                    else{
+                        resttimer = 0;
+                        $('#timer').text(0);
+                        clearInterval(rest);
+                    }
+                },100);
+
+
+                //PULLING
+
+
+                setTimeout(() => {
+                    var timer = 7;
+                    $('#timer').addClass('pull').removeClass('rest');
+                    $('#timer').text(timer);
+                    var pull = setInterval(function(){
+                        if(timer > 0){
+                            $('#timer').text((timer-=.100).toPrecision(4));
+                        }
+                        else{
+                            timer = 0;
+                            $('#timer').text(0);
+                            clearInterval(pull);
+                            reps--;
+                            if(reps > 0){
+                                rep(reps, totalreps);
+                            }
+                        }
+                    },100);
+                }, 3000);
+            }
+        </script>
+    </body>
+</html>
