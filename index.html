@@ -77,6 +77,7 @@
                             $('#timer').text(0);
                             clearInterval(pull);
                             reps--;
+                            $('#reps').text(`${totalreps - reps}/${totalreps}`);
                             if(reps > 0){
                                 rep(reps, totalreps);
                             }
