@@ -6,12 +6,39 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>        
         <style>
-            #timer,#reps{
-                font-size: 72px;
-                width: 100vw;
-                height: 250px;
+            .form-row{
+                margin: 60px 0;
+                font-size: 1.2rem;
+            }
+            .counter{
+                position: fixed;
+                bottom:150px;
+                height: 150px;
+                font-size: 3rem;
                 text-align: center;
                 align-items: center;
+                width: 50vw;
+                padding: 0;
+            }
+            .r{
+                left: 50vw;
+            }
+            .start-btn{
+                height:150px;
+                margin:auto;
+                align-items: center;
+            }
+            #startBtn{
+                position: fixed;
+                bottom:0;
+                height:150px;
+                right:0;
+                left:0;
+                font-size: 3rem;
+                padding-top: 30px;
+                text-align: center;
+                border-radius: 0;
+
             }
             .pull{
                 color: white;
@@ -21,56 +48,85 @@
                 color: white;
                 background-color: red;
             }
+
+            #reps,#timer{
+                height: 100%;
+                padding-top: 35px;
+            }
         </style>
     </head>
     <body>
         <div class="container-fluid">
-            <div class="row">
-                <a href="#" class="btn btn-primary btn-lg" id="startBtn">Start Workout</a>
+
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-range">
+                        <label for="reps">Total Reps</label>
+                        <input type="number" name="reps" class="form-control" value="7"/>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <div id="reps">/</div>
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-range">
+                        <label for="rest">Rest time (seconds)</label>
+                        <input type="number" name="rest" class="form-control" value="3"/>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <div id="timer">3</div>
+            <div class="form-row">
+                <div class="col-12">
+                        <label for="pull">Pull time (seconds)</label>
+                        <input type="number" name="pull" class="form-control" value="7"/>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-6 counter">
+                    <div id="reps">/</div>
+                </div>
+                <div class="col-6 counter r">
+                    <div id="timer">3</div>
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary btn-lg" id="startBtn">Start Workout</a>
         </div>
         <script>
             $(function(){
                 $('#startBtn').click(function(){
-                    var reps = 7;
-                    var totalreps = 7;
+                    var reps = $('input[name=reps]').val();
+                    var totalreps = reps;
                     rep(reps,totalreps);
                 });
             });
 
             function rep(reps,totalreps){
-                $('#reps').text(`${totalreps - reps}/${totalreps}`);
+                $('#reps').text(`${(totalreps - reps) + 1}/${totalreps}`);
                 //RESTING
                 $('#timer').addClass('rest').removeClass('pull');
-                var resttimer = 3;
+                var resttimer = $('input[name=rest]').val();
                 var rest = setInterval(function(){
                     if(resttimer > 0){
-                        $('#timer').text((resttimer-=.100).toPrecision(4));
+                        $('#timer').text((resttimer-=.01).toPrecision(3));
                     }
                     else{
                         resttimer = 0;
                         $('#timer').text(0);
                         clearInterval(rest);
                     }
-                },100);
+                },10);
 
 
                 //PULLING
 
 
                 setTimeout(() => {
-                    var timer = 7;
+                    var timer = $('input[name=pull]').val();;
                     $('#timer').addClass('pull').removeClass('rest');
                     $('#timer').text(timer);
                     var pull = setInterval(function(){
                         if(timer > 0){
-                            $('#timer').text((timer-=.100).toPrecision(4));
+                            $('#timer').text((timer-=.01).toPrecision(3));
                         }
                         else{
                             timer = 0;
@@ -82,8 +138,8 @@
                                 rep(reps, totalreps);
                             }
                         }
-                    },100);
-                }, 3000);
+                    },10);
+                }, $('input[name=rest]').val() * 1000);
             }
         </script>
     </body>
