@@ -111,7 +111,7 @@
                 $('#timer').addClass('rest').removeClass('pull');
                 var resttimer = $('input[name=rest]').val();
                 var rest = setInterval(function(){
-                    resttimer-=.1;
+                    resttimer-=.5;
                     if(resttimer > 0){
                         $('#timer').text((resttimer).toPrecision(2));
                     }
@@ -120,7 +120,7 @@
                         $('#timer').text(0);
                         clearInterval(rest);
                     }
-                },100);
+                },500);
 
 
                 
@@ -131,7 +131,7 @@
                     $('#timer').addClass('pull').removeClass('rest');
                     var timer = $('input[name=pull]').val();
                     var pull = setInterval(function(){
-                        timer-=.1;
+                        timer-=.5;
                         if(timer > 0){
                             $('#timer').text((timer).toPrecision(2));
                         }
@@ -150,7 +150,7 @@
                                 $('#startBtn').removeAttr('disabled');
                             }
                         }
-                    },100);
+                    },500);
                 }, $('input[name=rest]').val() * 1000);
             }
         </script>
