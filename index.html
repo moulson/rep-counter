@@ -94,6 +94,10 @@
         <script>
             $(function(){
                 $('#startBtn').click(function(){
+                    if($(this).attr('disabled')){
+                        return;
+                    }
+                    $('#startBtn').attr('disabled', 'disabled');
                     var reps = $('input[name=reps]').val();
                     var totalreps = reps;
                     rep(reps,totalreps);
@@ -102,43 +106,51 @@
 
             function rep(reps,totalreps){
                 $('#reps').text(`${(totalreps - reps) + 1}/${totalreps}`);
+
                 //RESTING
                 $('#timer').addClass('rest').removeClass('pull');
                 var resttimer = $('input[name=rest]').val();
                 var rest = setInterval(function(){
+                    resttimer-=.1;
                     if(resttimer > 0){
-                        $('#timer').text((resttimer-=.01).toPrecision(3));
+                        $('#timer').text((resttimer).toPrecision(2));
                     }
                     else{
                         resttimer = 0;
                         $('#timer').text(0);
                         clearInterval(rest);
                     }
-                },10);
+                },100);
 
 
-                //PULLING
-
+                
 
                 setTimeout(() => {
-                    var timer = $('input[name=pull]').val();;
+
+                    //PULLING
                     $('#timer').addClass('pull').removeClass('rest');
-                    $('#timer').text(timer);
+                    var timer = $('input[name=pull]').val();
                     var pull = setInterval(function(){
+                        timer-=.1;
                         if(timer > 0){
-                            $('#timer').text((timer-=.01).toPrecision(3));
+                            $('#timer').text((timer).toPrecision(2));
                         }
                         else{
                             timer = 0;
-                            $('#timer').text(0);
+                            $('#timer').text(timer);
+
+                            $('#reps').text(`${(totalreps - reps) + 1}/${totalreps}`);
                             clearInterval(pull);
+
                             reps--;
-                            $('#reps').text(`${totalreps - reps}/${totalreps}`);
                             if(reps > 0){
                                 rep(reps, totalreps);
                             }
+                            else{
+                                $('#startBtn').removeAttr('disabled');
+                            }
                         }
-                    },10);
+                    },100);
                 }, $('input[name=rest]').val() * 1000);
             }
         </script>
